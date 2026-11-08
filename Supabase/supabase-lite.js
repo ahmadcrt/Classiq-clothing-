@@ -78,5 +78,15 @@
     if (!paths || !paths.length) return Promise.resolve();
     return ready().then(function () { return raw("/storage/v1/object/" + BUCKET, { method: "DELETE", auth: true, body: { prefixes: paths } }); }).catch(function () {});
   }
-  w.SB = { configured: configured, rest: rest, session: function () { return S; }, signIn: signIn, signOut: signOut, upload: upload, removeFiles: removeFiles, publicUrl: publicUrl };
+
+  function jsonOf(r) { return r.text().then(function (t) { var b = null; try { b = t ? JSON.parse(t) : null; } catch (e) {} if (!r.ok) throw fail(r, b); return b; }); }
+  function setSession(t) { /* session from an invite / recovery link */
+    return fetch(U + "/auth/v1/user", { headers: { apikey: K, Authorization: "Bearer " + t.access_token } }).then(function (r) {
+      return jsonOf(r).then(function (u) { keep({ access_token: t.access_token, refresh_token: t.refresh_token, expires_at: Math.floor(Date.now() / 1000) + (+t.expires_in || 3600), user: u }); return S; });
+    });
+  }
+  function updatePassword(pw) { return ready().then(function () { return raw("/auth/v1/user", { method: "PUT", auth: true, body: { password: pw } }); }).then(jsonOf); }
+  function recover(email, redirect) { return raw("/auth/v1/recover?redirect_to=" + encodeURIComponent(redirect), { method: "POST", body: { email: email } }).then(function (r) { if (!r.ok) return jsonOf(r); }); }
+  function fn(name, body) { return ready().then(function () { return raw("/functions/v1/" + name, { method: "POST", auth: true, body: body }); }).then(jsonOf); }
+  w.SB = { configured: configured, rest: rest, session: function () { return S; }, signIn: signIn, signOut: signOut, upload: upload, removeFiles: removeFiles, setSession: setSession, updatePassword: updatePassword, recover: recover, fn: fn, publicUrl: publicUrl };
 })(window);
