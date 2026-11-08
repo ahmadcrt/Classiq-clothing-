@@ -46,3 +46,24 @@ dialog{border:0;border-radius:24px;padding:28px;width:min(440px,92vw);background
 table,thead,tbody,tr,td{display:block}thead{display:none}tbody tr{padding:14px 16px;border-bottom:1px solid var(--line)}td{border:0;padding:6px 0;display:flex;justify-content:space-between;align-items:center;gap:12px}td::before{content:attr(data-l);font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}td.nm::before{display:none}td.nm{display:block}.stat b{font-size:44px}.acts .btn{flex:1}}
 @media (max-width:420px){.stats{gap:10px}.stat{padding:16px}.stat b{font-size:38px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- v2: icons, loading, new pages ---- */
+.i{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:middle}.i.big{width:34px;height:34px;color:var(--navy)}
+#sb nav a .i{color:var(--gold2)}#sb nav a.on .i{color:var(--ink)}#sb nav a span{flex:1}.sbf a{display:flex;align-items:center;gap:10px}
+#burger .i{width:26px;height:26px}.sf{position:relative;flex:2 1 220px}.sf .i{position:absolute;left:14px;top:15px;color:var(--muted)}.sf input{padding-left:44px}
+.lnk{background:none;border:0;color:var(--navy);font-weight:800;text-decoration:underline;cursor:pointer;padding:12px 4px;min-height:48px}@media (prefers-color-scheme:dark){.lnk{color:var(--gold2)}}.gcard .lnk{display:block;margin:6px auto 0;width:auto}
+.okmsg{color:var(--ok);font-weight:700;margin:12px 0 0}.who{font-weight:700}.h2{margin:0 0 6px;font-size:24px}.cnt{margin:0 0 10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}.pwf{position:relative}.pwf input{padding-right:56px}.eye{position:absolute;right:4px;top:2px;min-width:46px;min-height:46px;border:0;background:none;cursor:pointer;color:var(--muted)}
+.stat{display:grid;gap:4px}.stat .si{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--ink);color:var(--gold2);margin-bottom:6px}.stat.warn .si{background:var(--red);color:#fff}
+.bar{display:grid;grid-template-columns:130px 1fr 40px;gap:12px;align-items:center;margin:10px 0}.bar .t{height:14px;border-radius:14px;background:var(--line);overflow:hidden}.bar .t div{height:100%;border-radius:14px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .8s var(--ease)}
+.tag.low{background:#E69B00;color:#1b1200}.tag.out{background:var(--red);color:#fff}.tag.ok{background:var(--ok);color:#fff}
+.ac{display:flex;gap:14px;align-items:flex-start;padding:14px 22px;border-bottom:1px solid var(--line)}.ac:last-child{border:0}.ac .ci{width:40px;height:40px;border-radius:12px;background:var(--ink);color:var(--gold2);display:grid;place-items:center;flex:none}.ac div{flex:1;min-width:0}.ac small{display:block}
+.av{width:46px;height:46px;border-radius:50%;background:var(--navy);color:var(--gold2);display:grid;place-items:center;font-weight:800;flex:none;text-transform:uppercase}.tm{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid var(--line)}.tm:last-child{border:0}.tm>div{flex:1;min-width:0}.tm b{display:block;overflow:hidden;text-overflow:ellipsis}
+.dl{display:grid;grid-template-columns:110px 1fr;gap:8px 12px;margin:14px 0 22px}.dl dt{font-weight:800;color:var(--muted)}.dl dd{margin:0;word-break:break-all}.tp{margin-top:18px}
+.meter{height:8px;border-radius:8px;background:var(--line);margin-top:10px;overflow:hidden}.meter div{height:100%;width:0;background:var(--red);transition:width .3s,background .3s}
+.sk{border-radius:20px;min-height:140px;background:linear-gradient(90deg,var(--line),rgba(201,162,75,.2),var(--line));background-size:200% 100%;animation:sh 1.2s infinite}@keyframes sh{to{background-position:-200% 0}}
+.btn.busy{pointer-events:none;opacity:.8}.btn.busy .i{animation:rot .8s linear infinite}@keyframes rot{to{transform:rotate(360deg)}}.ib .i{width:20px;height:20px;margin:auto}.ib{display:grid;place-items:center}
+.chip button .i{width:16px;height:16px}.im .bt button{display:grid;place-items:center}.im .bt .i{width:20px;height:20px}.dz .i{margin:0 auto}
+@media (max-width:860px){.two{grid-template-columns:1fr}.bar{grid-template-columns:100px 1fr 34px}.dl{grid-template-columns:1fr}.tm,.ac{padding:14px 16px}.tools .btn{flex:1}}
+.top h1{line-height:1.1}.tm b{overflow-wrap:anywhere}
+@media (max-width:860px){.top h1{font-size:28px}.tm{flex-wrap:wrap}.tm>div{flex:1 1 150px}.tm .tag{order:3}}
