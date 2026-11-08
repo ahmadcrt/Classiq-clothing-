@@ -234,9 +234,13 @@
   $("#cx").addEventListener("click", () => { st.editing = null; });
 
   /* ---------- team & administrators ---------- */
+  let FN = null; /* works whether the function was deployed as admin-users or admin-users- */
+  async function teamFn(body) {
+    let last; for (const n of FN ? [FN] : ["admin-users", "admin-users-"]) { try { const r = await SB.fn(n, body); FN = n; return r; } catch (e) { last = e; if (e.status !== 404) throw e; } } throw last;
+  }
   async function loadTeam() {
     $("#tl").innerHTML = '<div class="sk" style="margin:16px"></div>';
-    try { st.admins = (await SB.fn("admin-users", { action: "list" })).admins; renderTeam(); }
+    try { st.admins = (await teamFn({ action: "list" })).admins; renderTeam(); }
     catch (e) { $("#tl").innerHTML = `<p class="err pad">${esc(msg(e))}</p>`; }
   }
   function renderTeam() {
@@ -249,7 +253,7 @@
     const b = e.target.closest("[data-rv]"); if (!b || b.disabled) return;
     confirmBox("Revoke administrator access?", `${b.dataset.em} will lose access to the dashboard immediately. Their login account is kept.`, "Revoke").then(async (ok) => {
       if (!ok) return;
-      try { await SB.fn("admin-users", { action: "revoke", user_id: b.dataset.rv }); toast("Administrator access revoked"); loadTeam(); refreshActivity(); } catch (er) { toast(msg(er), "err"); }
+      try { await teamFn({ action: "revoke", user_id: b.dataset.rv }); toast("Administrator access revoked"); loadTeam(); refreshActivity(); } catch (er) { toast(msg(er), "err"); }
     });
   });
   $("#tc").addEventListener("change", (e) => { $("#tpw").hidden = !e.target.checked; });
@@ -259,7 +263,7 @@
     if ($("#tc").checked && tmp.length < 8) { er.textContent = "Temporary password must be at least 8 characters."; er.hidden = false; return; }
     busy($("#tb2"), true, "Inviting...");
     try {
-      const r = await SB.fn("admin-users", { action: "invite", email: em, password: tmp || undefined, redirectTo: location.origin + location.pathname });
+      const r = await teamFn({ action: "invite", email: em, password: tmp || undefined, redirectTo: location.origin + location.pathname });
       toast(r.mode === "invited" ? "Invitation email sent to " + em : r.mode === "created" ? "Administrator account created for " + em : em + " is now an administrator");
       $("#te").value = ""; $("#tp").value = ""; $("#tc").checked = false; $("#tpw").hidden = true; loadTeam(); refreshActivity();
     } catch (x) { er.textContent = msg(x); er.hidden = false; }
