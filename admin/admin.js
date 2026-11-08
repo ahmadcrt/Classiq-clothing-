@@ -1,3 +1,12 @@
+/* Safety net: if a browser still holds an old cached supabase-lite.js, provide the newer helpers here. */
+(function () {
+  var C = window.CLASSEEQ_CONFIG || {}, U = String(C.SUPABASE_URL || "").replace(/\/+$/, ""), K = String(C.SUPABASE_ANON_KEY || "");
+  function jo(r) { return r.text().then(function (t) { var b = null; try { b = t ? JSON.parse(t) : null; } catch (e) {} if (!r.ok) { var e = new Error((b && (b.msg || b.message || b.error_description || b.error)) || "HTTP " + r.status); e.status = r.status; throw e; } return b; }); }
+  function hd() { var s = SB.session(); return { apikey: K, Authorization: "Bearer " + (s ? s.access_token : K), "Content-Type": "application/json" }; }
+  if (!SB.fn) SB.fn = function (n, b) { return fetch(U + "/functions/v1/" + n, { method: "POST", headers: hd(), body: JSON.stringify(b) }).then(jo); };
+  if (!SB.updatePassword) SB.updatePassword = function (pw) { return fetch(U + "/auth/v1/user", { method: "PUT", headers: hd(), body: JSON.stringify({ password: pw }) }).then(jo); };
+  if (!SB.recover) SB.recover = function (em, rd) { return fetch(U + "/auth/v1/recover?redirect_to=" + encodeURIComponent(rd), { method: "POST", headers: { apikey: K, "Content-Type": "application/json" }, body: JSON.stringify({ email: em }) }).then(function (r) { return r.ok ? null : jo(r); }); };
+})();
 /* CLASSEEQ admin dashboard v2. The browser only ever holds the public anon key and the signed-in user's own token.
    Every write is enforced on the server (Row Level Security + the admin-users Edge Function). */
 (() => {
